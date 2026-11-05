@@ -1,0 +1,130 @@
+<!doctype html>
+<html lang="es-CL">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Barras Singapur · Matemática de 1° a 5° básico</title>
+  <meta name="description" content="Aprende las cuatro operaciones con el Método Singapur: Concreto, Pictórico y Abstracto, con modelos de barras interactivos.">
+
+  <!-- PWA -->
+  <link rel="manifest" href="./manifest.json">
+  <meta name="theme-color" content="#2f6fde">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="Barras">
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="./icon-192.png" type="image/png" sizes="192x192">
+  <link rel="apple-touch-icon" href="./apple-touch-icon.png">
+
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <header class="app-header">
+    <div class="brand">
+      <svg class="brand-logo" viewBox="0 0 64 64" aria-hidden="true">
+        <rect width="64" height="64" rx="14" fill="#fff" fill-opacity=".18"/>
+        <rect x="10" y="16" width="44" height="12" rx="3" fill="#fff"/>
+        <rect x="10" y="36" width="14" height="12" rx="3" fill="#ffb703"/>
+        <rect x="25" y="36" width="14" height="12" rx="3" fill="#ffb703"/>
+        <rect x="40" y="36" width="14" height="12" rx="3" fill="#7ee0b0"/>
+      </svg>
+      <div class="brand-text">
+        <h1>Barras Singapur</h1>
+        <small>Concreto · Pictórico · Abstracto</small>
+      </div>
+    </div>
+    <span class="stars" id="starCount" title="Problemas resueltos">⭐ 0</span>
+    <button class="install-btn" id="installBtn" type="button" hidden>Instalar</button>
+  </header>
+
+  <nav class="levels" id="levelNav" aria-label="Niveles"></nav>
+
+  <main class="main">
+    <section class="card level-intro" id="levelIntro" aria-live="polite"></section>
+
+    <div class="problem-picker" id="problemPicker" role="group" aria-label="Problemas del nivel"></div>
+
+    <article class="card problem" id="problemCard" aria-labelledby="problemTitle">
+      <div class="problem-head">
+        <h2 class="problem-title" id="problemTitle"></h2>
+        <button class="icon-btn" id="speakBtn" type="button" aria-label="Leer el problema en voz alta" title="Leer en voz alta">🔊</button>
+      </div>
+      <p class="problem-text" id="problemText"></p>
+
+      <div class="cpa-tabs" id="cpaTabs" role="tablist" aria-label="Fases del método">
+        <button class="cpa-tab" type="button" role="tab" data-phase="C"><span class="cpa-n">1 · Concreto</span><small>Manipula</small></button>
+        <button class="cpa-tab" type="button" role="tab" data-phase="P"><span class="cpa-n">2 · Pictórico</span><small>Barras</small></button>
+        <button class="cpa-tab" type="button" role="tab" data-phase="A"><span class="cpa-n">3 · Abstracto</span><small>Operación</small></button>
+      </div>
+
+      <!-- Fase Concreta: objetos manipulables -->
+      <section class="phase" id="phaseC" aria-label="Fase concreta">
+        <div class="concrete-area" id="concreteArea"></div>
+      </section>
+
+      <!-- Fase Pictórica: contenedor del modelo de barras interactivo -->
+      <section class="phase" id="phaseP" aria-label="Fase pictórica" hidden>
+        <div class="bar-model" id="barModel" aria-label="Modelo de barras interactivo"></div>
+      </section>
+
+      <!-- Fase Abstracta: modelo de referencia + ecuaciones -->
+      <section class="phase" id="phaseA" aria-label="Fase abstracta" hidden>
+        <div class="bar-model bar-model-mini" id="barModelMini" aria-hidden="true"></div>
+        <div class="equation-area" id="equationArea"></div>
+      </section>
+
+      <div class="coach-wrap">
+        <p class="coach" id="coach" aria-live="polite"></p>
+        <button class="icon-btn small" id="coachSpeak" type="button" aria-label="Leer la indicación en voz alta" title="Leer indicación">🔊</button>
+      </div>
+
+      <div class="answer-panel" id="answerPanel" hidden>
+        <output class="answer-display empty" id="answerDisplay">?</output>
+        <div class="keypad" id="keypad">
+          <button class="key" type="button" data-key="1">1</button>
+          <button class="key" type="button" data-key="2">2</button>
+          <button class="key" type="button" data-key="3">3</button>
+          <button class="key" type="button" data-key="4">4</button>
+          <button class="key" type="button" data-key="5">5</button>
+          <button class="key" type="button" data-key="6">6</button>
+          <button class="key" type="button" data-key="7">7</button>
+          <button class="key" type="button" data-key="8">8</button>
+          <button class="key" type="button" data-key="9">9</button>
+          <button class="key back" type="button" data-key="back" aria-label="Borrar">⌫</button>
+          <button class="key" type="button" data-key="0">0</button>
+          <button class="key ok" type="button" data-key="ok" aria-label="Comprobar">✓</button>
+        </div>
+        <div class="oppad" id="opPad" hidden>
+          <button class="opkey" type="button" data-op="+" aria-label="sumar">+</button>
+          <button class="opkey" type="button" data-op="−" aria-label="restar">−</button>
+          <button class="opkey" type="button" data-op="×" aria-label="multiplicar">×</button>
+          <button class="opkey" type="button" data-op="÷" aria-label="dividir">÷</button>
+        </div>
+      </div>
+
+      <div class="nav-row">
+        <button class="btn ghost" id="resetBtn" type="button">↺ Reiniciar fase</button>
+        <button class="btn" id="nextBtn" type="button" hidden>Siguiente →</button>
+      </div>
+    </article>
+
+    <details class="card guide">
+      <summary>Guía para el adulto: cómo acompañar con el método CPA</summary>
+      <ol>
+        <li><strong>Concreto:</strong> el niño o la niña manipula objetos (fichas, billetes, tiras). Deja que cuente en voz alta; no apures este paso.</li>
+        <li><strong>Pictórico:</strong> los objetos se convierten en barras. Antes de calcular, pregunta: <em>«¿Qué representa esta parte?»</em> y <em>«¿Dónde está lo que buscamos?»</em>.</li>
+        <li><strong>Abstracto:</strong> recién ahora se escribe la operación. Si se equivoca de signo, vuelvan a mirar la barra: ¿juntamos, quitamos, repetimos o repartimos?</li>
+      </ol>
+      <p>La app no penaliza errores: da pistas a partir del segundo intento y muestra la respuesta después de varios intentos para que nadie se quede atascado. El progreso se guarda solo en este dispositivo.</p>
+    </details>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <noscript>
+    <p class="noscript">Esta aplicación necesita JavaScript activado para funcionar.</p>
+  </noscript>
+</body>
+</html>
